@@ -1,0 +1,20 @@
+import cv2
+from ultralytics import YOLO
+model= YOLO("yolov8n.pt")
+face_model = YOLO("yolov8n-face.pt")
+cap= cv2.VideoCapture(0)
+while cv2.waitKey(1) != ord("x"):
+     _,  frame = cap.read()
+
+     result = model(frame,verbose=False)
+     face_result = face_model(frame)
+     cat_person = result[0].plot()
+     cat_person_face = face_result[0].plot(img=cat_person)
+
+     cv2.imshow("my window", cat_person_face)
+     # cv2.waitKey(0)
+     cv2.moveWindow("my window", 100, 100)
+
+cv2.waitKey(500)
+cap.release()
+cv2.destroyAllWindows()
